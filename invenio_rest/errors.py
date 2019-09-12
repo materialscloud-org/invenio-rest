@@ -59,7 +59,12 @@ class RESTException(HTTPException):
 
         :returns: A list containing a dictionary representing the errors.
         """
-        return [e.to_dict() for e in self.errors] if self.errors else None
+        if not self.errors:
+            return None
+        elif isinstance(self.errors, list) or isinstance(self.errors, tuple):
+            return [e.to_dict() for e in self.errors]
+        else:
+            return self.errors
 
     def get_description(self, environ=None):
         """Get the description."""
